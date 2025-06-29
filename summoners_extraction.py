@@ -4,8 +4,9 @@ import psycopg2
 import pandas as pd
 import os
 from datetime import datetime
+from requests.adapters import HTTPAdapter, Retry
 
-# Load secrets from environment variables
+# Load secrets
 API_KEY = os.getenv("RIOT_API_KEY")
 SUPABASE_DB_HOST = os.getenv("SUPABASE_DB_HOST")
 SUPABASE_DB_NAME = os.getenv("SUPABASE_DB_NAME")
@@ -13,9 +14,7 @@ SUPABASE_DB_USER = os.getenv("SUPABASE_DB_USER")
 SUPABASE_DB_PASSWORD = os.getenv("SUPABASE_DB_PASSWORD")
 SUPABASE_DB_PORT = os.getenv("SUPABASE_DB_PORT", 5432)
 
-headers = {
-    "X-Riot-Token": API_KEY
-}
+headers = {"X-Riot-Token": API_KEY}
 
 regions = ["euw1", "na1", "kr", "eun1"]
 tiers = ["GOLD", "PLATINUM", "EMERALD", "DIAMOND"]
@@ -35,6 +34,18 @@ tier_map = {
     "DIAMOND": 4,
 }
 
+# Setup session with retries
+session = requests.Session()
+retries = Retry(
+    total=5,
+    backoff_factor=1,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["GET"]
+)
+adapter = HTTPAdapter(max_retries=retries)
+session.mount("https://", adapter)
+
+
 def get_summoners(region, tier, divisions, max_count=20):
     base_url = f"https://{region}.api.riotgames.com"
     summoner_entries = []
@@ -42,11 +53,14 @@ def get_summoners(region, tier, divisions, max_count=20):
     for division in divisions:
         for page in range(1, 6):
             url = f"{base_url}/lol/league/v4/entries/RANKED_SOLO_5x5/{tier}/{division}?page={page}"
-            resp = requests.get(url, headers=headers)
-            if resp.status_code != 200:
-                print(f"Error {resp.status_code} from {region} {tier} {division}: {resp.text}")
-                time.sleep(10)
+            try:
+                resp = session.get(url, headers=headers, timeout=10)
+                resp.raise_for_status()
+            except requests.exceptions.RequestException as e:
+                print(f"Request failed for {url} → {e}")
+                time.sleep(5)
                 continue
+
             entries = resp.json()
             for entry in entries:
                 summoner_id = entry.get("summonerId")
@@ -67,18 +81,21 @@ def get_summoners(region, tier, divisions, max_count=20):
             time.sleep(1.2)
     return summoner_entries
 
+
 def get_puuid_and_name(region, summoner_id):
     url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/{summoner_id}"
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
+    try:
+        resp = session.get(url, headers=headers, timeout=10)
+        resp.raise_for_status()
+        data = resp.json()
         return data["puuid"], data["name"]
-    else:
-        print(f"Error fetching puuid for {summoner_id} in {region}: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to get PUUID for {summoner_id} in {region} → {e}")
         return None, None
 
+
 def connect_db():
-    conn = psycopg2.connect(
+    return psycopg2.connect(
         host=SUPABASE_DB_HOST,
         dbname=SUPABASE_DB_NAME,
         user=SUPABASE_DB_USER,
@@ -86,10 +103,11 @@ def connect_db():
         port=SUPABASE_DB_PORT,
         sslmode='require'
     )
-    return conn
+
 
 def clear_summoners_table(cursor):
     cursor.execute("TRUNCATE TABLE summoners;")
+
 
 def upsert_summoner(cursor, summoner):
     insert_sql = """
@@ -111,6 +129,7 @@ def upsert_summoner(cursor, summoner):
         summoner["summonerName"],
     ))
 
+
 def main():
     all_summoners = []
     print("Starting summoner fetch...")
@@ -129,7 +148,6 @@ def main():
             summoner["summonerName"] = latest_name
         time.sleep(1.3)
 
-    # Save to timestamped CSV
     now = datetime.now()
     date_str = now.strftime("%-d-%B-%Y").lower().replace(" ", "")
     os.makedirs("data", exist_ok=True)
@@ -141,19 +159,19 @@ def main():
 
     conn = connect_db()
     cursor = conn.cursor()
-
     print("Clearing summoners table...")
     clear_summoners_table(cursor)
 
     print("Inserting summoners into database...")
     for summoner in all_summoners:
-        if "puuid" in summoner:  # only insert complete rows
+        if "puuid" in summoner:
             upsert_summoner(cursor, summoner)
 
     conn.commit()
     cursor.close()
     conn.close()
     print("Database update complete.")
+
 
 if __name__ == "__main__":
     main()
