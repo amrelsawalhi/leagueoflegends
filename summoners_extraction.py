@@ -21,7 +21,7 @@ regions = ["euw1", "na1", "kr", "eun1"]
 tiers = ["GOLD", "PLATINUM", "EMERALD", "DIAMOND"]
 divisions = ["I", "II", "III", "IV"]
 
-# These should match your dimension tables IDs
+
 region_map = {
     "euw1": 1,
     "na1": 2,
@@ -87,6 +87,9 @@ def connect_db():
     )
     return conn
 
+def clear_summoners_table(cursor):
+    cursor.execute("TRUNCATE TABLE summoners;")
+
 def upsert_summoner(cursor, summoner):
     insert_sql = """
     INSERT INTO summoners (region_id, tier_id, division, summoner_id, puuid, summoner_name)
@@ -125,10 +128,10 @@ def main():
             summoner["summonerName"] = latest_name
         time.sleep(1.3)
 
-    # Format CSV filename as e.g. '1-june-2025.csv'
+
     now = datetime.now()
-    date_str = now.strftime("%-d-%B-%Y").lower()  # Linux/macOS
-    # On Windows, replace with: date_str = now.strftime("%#d-%B-%Y").lower()
+    date_str = now.strftime("%-d-%B-%Y").lower()  
+  
 
     csv_filename = f"summoners_{date_str}.csv"
 
@@ -139,9 +142,13 @@ def main():
     conn = connect_db()
     cursor = conn.cursor()
 
+    print("Clearing summoners table...")
+    clear_summoners_table(cursor)
+
     print("Inserting summoners into database...")
     for summoner in all_summoners:
         upsert_summoner(cursor, summoner)
+
     conn.commit()
     cursor.close()
     conn.close()
