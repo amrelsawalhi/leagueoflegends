@@ -60,6 +60,7 @@ def get_summoners(region, tier, divisions, max_count=20):
                         "summonerName": summoner_name
                     })
                     seen_ids.add(summoner_id)
+
                 if len(seen_ids) >= max_count:
                     break
             if len(seen_ids) >= max_count:
