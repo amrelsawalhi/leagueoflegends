@@ -21,7 +21,6 @@ regions = ["euw1", "na1", "kr", "eun1"]
 tiers = ["GOLD", "PLATINUM", "EMERALD", "DIAMOND"]
 divisions = ["I", "II", "III", "IV"]
 
-
 region_map = {
     "euw1": 1,
     "na1": 2,
@@ -50,15 +49,17 @@ def get_summoners(region, tier, divisions, max_count=20):
                 continue
             entries = resp.json()
             for entry in entries:
-                if entry["summonerId"] not in seen_ids:
+                summoner_id = entry.get("summonerId")
+                summoner_name = entry.get("summonerName")
+                if summoner_id and summoner_name and summoner_id not in seen_ids:
                     summoner_entries.append({
                         "region": region,
                         "tier": tier,
                         "division": division,
-                        "summonerId": entry["summonerId"],
-                        "summonerName": entry["summonerName"]
+                        "summonerId": summoner_id,
+                        "summonerName": summoner_name
                     })
-                    seen_ids.add(entry["summonerId"])
+                    seen_ids.add(summoner_id)
                 if len(seen_ids) >= max_count:
                     break
             if len(seen_ids) >= max_count:
@@ -128,12 +129,11 @@ def main():
             summoner["summonerName"] = latest_name
         time.sleep(1.3)
 
-
+    # Save to timestamped CSV
     now = datetime.now()
-    date_str = now.strftime("%-d-%B-%Y").lower()  
-  
-
-    csv_filename = f"summoners_{date_str}.csv"
+    date_str = now.strftime("%-d-%B-%Y").lower()  # Use %#d on Windows
+    os.makedirs("data", exist_ok=True)
+    csv_filename = f"data/summoners_{date_str}.csv"
 
     df = pd.DataFrame(all_summoners)
     df.to_csv(csv_filename, index=False)
