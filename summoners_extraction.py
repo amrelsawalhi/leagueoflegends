@@ -60,7 +60,6 @@ def get_summoners(region, tier, divisions, max_count=20):
                         "summonerName": summoner_name
                     })
                     seen_ids.add(summoner_id)
-
                 if len(seen_ids) >= max_count:
                     break
             if len(seen_ids) >= max_count:
@@ -132,7 +131,7 @@ def main():
 
     # Save to timestamped CSV
     now = datetime.now()
-    date_str = now.strftime("%-d-%B-%Y").lower()  # Use %#d on Windows
+    date_str = now.strftime("%-d-%B-%Y").lower().replace(" ", "")
     os.makedirs("data", exist_ok=True)
     csv_filename = f"data/summoners_{date_str}.csv"
 
@@ -148,7 +147,8 @@ def main():
 
     print("Inserting summoners into database...")
     for summoner in all_summoners:
-        upsert_summoner(cursor, summoner)
+        if "puuid" in summoner:  # only insert complete rows
+            upsert_summoner(cursor, summoner)
 
     conn.commit()
     cursor.close()
