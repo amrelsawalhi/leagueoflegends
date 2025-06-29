@@ -1,0 +1,43 @@
+name: Fetch Summoners Data
+
+on:
+  workflow_dispatch:   # allows manual trigger
+  schedule:
+    - cron: '0 2 * * 1'  # every Monday at 2:00 AM UTC
+
+jobs:
+  fetch-summoners:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests psycopg2-binary pandas
+
+      - name: Run summoner extraction script
+        env:
+          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+          SUPABASE_DB_HOST: ${{ secrets.SUPABASE_DB_HOST }}
+          SUPABASE_DB_NAME: ${{ secrets.SUPABASE_DB_NAME }}
+          SUPABASE_DB_USER: ${{ secrets.SUPABASE_DB_USER }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
+        run: python summoners_extraction.py
+
+      - name: Commit and push new CSV file to /data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull origin main
+          git add data/summoners_*.csv
+          git commit -m "Update summoners CSV [skip ci]" || echo "No changes to commit"
+          git push origin main
