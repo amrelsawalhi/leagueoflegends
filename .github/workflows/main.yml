@@ -34,9 +34,12 @@ jobs:
         run: python summoners_extraction.py
 
       - name: Commit and push new CSV file to /data
+        env:
+          PAT_PUSH_TOKEN: ${{ secrets.PAT_PUSH_TOKEN }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "amrelsawalhi"
+          git config --global user.email "amr.elsawalhi@gmail.com"
+          git remote set-url origin https://amrelsawalhi:${PAT_PUSH_TOKEN}@github.com/amrelsawalhi/leagueoflegends.git
           git pull origin main
           git add data/summoners_*.csv
           git commit -m "Update summoners CSV [skip ci]" || echo "No changes to commit"
