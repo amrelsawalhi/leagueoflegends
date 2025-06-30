@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# Load secrets from environment variables
+# Load secrets
 API_KEY = os.getenv("RIOT_API_KEY")
 SUPABASE_DB_HOST = os.getenv("SUPABASE_DB_HOST")
 SUPABASE_DB_NAME = os.getenv("SUPABASE_DB_NAME")
@@ -21,50 +21,32 @@ SUPABASE_DB_USER = os.getenv("SUPABASE_DB_USER")
 SUPABASE_DB_PASSWORD = os.getenv("SUPABASE_DB_PASSWORD")
 SUPABASE_DB_PORT = os.getenv("SUPABASE_DB_PORT", 5432)
 
-headers = {"X-Riot-Token": API_KEY}
+HEADERS = {"X-Riot-Token": API_KEY}
 
 regions = ["euw1", "na1", "kr", "eun1"]
 tiers = ["GOLD", "PLATINUM", "EMERALD", "DIAMOND"]
 divisions = ["I", "II", "III", "IV"]
 
-region_map = {
-    "euw1": 3,
-    "na1": 8,
-    "kr": 5,
-    "eun1": 2,
-}
+region_map = {"euw1": 3, "na1": 8, "kr": 5, "eun1": 2}
+tier_map = {"GOLD": 4, "PLATINUM": 5, "EMERALD": 6, "DIAMOND": 7}
 
-tier_map = {
-    "GOLD": 4,
-    "PLATINUM": 5,
-    "EMERALD": 6,
-    "DIAMOND": 7,
-}
-
-# API rate limit tracking
+# Rate limit enforcement: 20/sec and 100/2min
 api_calls = deque()
 
 def enforce_rate_limits():
     now = time.time()
-
-    # Clean calls older than 120 seconds
     while api_calls and now - api_calls[0] > 120:
         api_calls.popleft()
-
-    # Check long-term limit
     if len(api_calls) >= 100:
         wait = 120 - (now - api_calls[0])
-        logging.warning(f"Rate limit 100/2min hit, sleeping for {wait:.2f}s")
+        logging.warning(f"⏳ Hit 100/2min limit, sleeping {wait:.2f}s")
         time.sleep(wait)
         return enforce_rate_limits()
-
-    # Check short-term limit
     recent = [t for t in api_calls if now - t < 1]
     if len(recent) >= 20:
-        logging.warning("Rate limit 20/sec hit, sleeping for 1s")
+        logging.warning("⏳ Hit 20/sec limit, sleeping 1s")
         time.sleep(1)
         return enforce_rate_limits()
-
     api_calls.append(now)
 
 def get_summoners(region, tier, divisions, max_count=20):
@@ -78,56 +60,38 @@ def get_summoners(region, tier, divisions, max_count=20):
             enforce_rate_limits()
 
             try:
-                resp = requests.get(url, headers=headers, timeout=10)
+                resp = requests.get(url, headers=HEADERS, timeout=10)
                 logging.info(f"[{region} - {tier} {division} p{page}] → {resp.status_code}")
-                if resp.status_code != 200:
-                    logging.warning(f"Failed request: {resp.status_code} → {resp.text[:200]}")
+                entries = resp.json()
+
+                if not isinstance(entries, list):
+                    logging.warning(f"Unexpected response: {entries}")
                     continue
 
-                entries = resp.json()
                 for entry in entries:
                     sid = entry.get("summonerId")
-                    sname = entry.get("summonerName")
-                    if sid and sname and sid not in seen_ids:
+                    puuid = entry.get("puuid")
+                    if sid and puuid and sid not in seen_ids:
                         summoner_entries.append({
                             "region": region,
                             "tier": tier,
                             "division": division,
                             "summonerId": sid,
-                            "summonerName": sname
+                            "puuid": puuid
                         })
                         seen_ids.add(sid)
-
                     if len(seen_ids) >= max_count:
                         break
-
                 if len(seen_ids) >= max_count:
                     break
                 time.sleep(1.2)
 
-            except requests.exceptions.RequestException as e:
-                logging.error(f"Exception on {url}: {e}")
+            except Exception as e:
+                logging.error(f"❌ Request failed for {url}: {e}")
                 time.sleep(5)
 
     logging.info(f"✅ {len(summoner_entries)} summoners fetched from {region} {tier}")
     return summoner_entries
-
-def get_puuid_and_name(region, summoner_id):
-    url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/{summoner_id}"
-    enforce_rate_limits()
-
-    try:
-        resp = requests.get(url, headers=headers, timeout=10)
-        logging.info(f"PUUID GET {region} {summoner_id} → {resp.status_code}")
-        if resp.status_code == 200:
-            data = resp.json()
-            return data["puuid"], data["name"]
-        else:
-            logging.warning(f"Failed to fetch PUUID for {summoner_id}: {resp.status_code}")
-            return None, None
-    except Exception as e:
-        logging.error(f"Exception getting PUUID for {summoner_id}: {e}")
-        return None, None
 
 def connect_db():
     return psycopg2.connect(
@@ -141,11 +105,10 @@ def connect_db():
 
 def upsert_summoner(cursor, summoner):
     insert_sql = """
-    INSERT INTO summoners (region_id, tier_id, division, summoner_id, puuid, summoner_name)
-    VALUES (%s, %s, %s, %s, %s, %s)
+    INSERT INTO summoners (region_id, tier_id, division, summoner_id, puuid)
+    VALUES (%s, %s, %s, %s, %s)
     ON CONFLICT (summoner_id) DO UPDATE
     SET puuid = EXCLUDED.puuid,
-        summoner_name = EXCLUDED.summoner_name,
         division = EXCLUDED.division,
         region_id = EXCLUDED.region_id,
         tier_id = EXCLUDED.tier_id;
@@ -155,49 +118,41 @@ def upsert_summoner(cursor, summoner):
         tier_map[summoner["tier"]],
         summoner["division"],
         summoner["summonerId"],
-        summoner["puuid"],
-        summoner["summonerName"],
+        summoner["puuid"]
     ))
 
 def main():
     all_summoners = []
-    logging.info("🚀 Starting summoner fetch")
+    logging.info("🚀 Starting summoner fetch...")
+
     for region in regions:
         for tier in tiers:
             logging.info(f"📡 Fetching: {region} - {tier}")
             summoners = get_summoners(region, tier, divisions, max_count=20)
             all_summoners.extend(summoners)
 
-    logging.info(f"🔍 Total summoners before PUUIDs: {len(all_summoners)}")
+    logging.info(f"🔍 Total summoners fetched: {len(all_summoners)}")
 
-    for summoner in all_summoners:
-        puuid, latest_name = get_puuid_and_name(summoner["region"], summoner["summonerId"])
-        if puuid:
-            summoner["puuid"] = puuid
-            summoner["summonerName"] = latest_name
-        time.sleep(1.3)
-
+    # Save CSV
     now = datetime.now()
     date_str = now.strftime("%-d-%B-%Y").lower()
-    csv_filename = f"summoners_{date_str}.csv"
-
-    df = pd.DataFrame(all_summoners)
-    df.to_csv(csv_filename, index=False)
+    os.makedirs("data", exist_ok=True)
+    csv_filename = f"data/summoners_{date_str}.csv"
+    pd.DataFrame(all_summoners).to_csv(csv_filename, index=False)
     logging.info(f"📁 Saved to {csv_filename}")
 
+    # DB insert
     conn = connect_db()
     cursor = conn.cursor()
-
     logging.info("🛠️ Inserting into database...")
     inserted = 0
     for summoner in all_summoners:
-        if "puuid" in summoner:
-            upsert_summoner(cursor, summoner)
-            inserted += 1
+        upsert_summoner(cursor, summoner)
+        inserted += 1
     conn.commit()
     cursor.close()
     conn.close()
-    logging.info(f"✅ Database update complete — {inserted} inserted.")
+    logging.info(f"✅ DB update complete — {inserted} rows inserted")
 
 if __name__ == "__main__":
     main()
