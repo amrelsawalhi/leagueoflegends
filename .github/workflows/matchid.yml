@@ -2,8 +2,8 @@ name: Fetch Match IDs
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # every day at 5 AM UTC
-  workflow_dispatch:
+    - cron: '0 5 * * *'   # Runs daily at 5 AM UTC
+  workflow_dispatch:       # Manual trigger available
 
 jobs:
   fetch-match-ids:
@@ -18,7 +18,8 @@ jobs:
       SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,5 +31,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests psycopg2-binary pandas
 
-      - name: Run match ID extractor
-        run: python match_ids_extraction.py
+      - name: Run match ID extraction
+        run: python matchids_extraction.py
+
+      - name: Push CSV to repo
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git pull origin main
+          git add data/match_ids_*.csv
+          git commit -m "Update match IDs CSV [skip ci]" || echo "No changes to commit"
+          git push origin main
