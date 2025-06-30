@@ -4,6 +4,7 @@ import psycopg2
 import logging
 from collections import deque
 import os
+import pandas as pd
 
 # Setup logging
 logging.basicConfig(
@@ -71,6 +72,26 @@ def mark_match_processed(match_id):
     cursor.close()
     conn.close()
 
+def truncate_tables(conn):
+    cursor = conn.cursor()
+    cursor.execute("TRUNCATE TABLE match_bans CASCADE;")
+    cursor.execute("TRUNCATE TABLE match_participants CASCADE;")
+    cursor.execute("TRUNCATE TABLE matches CASCADE;")
+    conn.commit()
+    cursor.close()
+
+def export_table_to_csv(conn, table_name, folder="data/exported"):
+    os.makedirs(folder, exist_ok=True)
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM {table_name};")
+    rows = cursor.fetchall()
+    colnames = [desc[0] for desc in cursor.description]
+    df = pd.DataFrame(rows, columns=colnames)
+    csv_path = os.path.join(folder, f"{table_name}.csv")
+    df.to_csv(csv_path, index=False)
+    cursor.close()
+    return csv_path
+
 def insert_match_data(conn, match_data, region_id):
     cursor = conn.cursor()
 
@@ -86,7 +107,6 @@ def insert_match_data(conn, match_data, region_id):
         "game_version": match_data["info"]["gameVersion"]
     }
 
-    # Insert into matches
     cursor.execute("""
         INSERT INTO matches (match_id, game_duration, game_creation, game_mode, game_type, map_id, region_id, queue_id, game_version)
         VALUES (%s, %s, to_timestamp(%s / 1000), %s, %s, %s, %s, %s, %s)
@@ -103,10 +123,8 @@ def insert_match_data(conn, match_data, region_id):
         match_info["game_version"]
     ))
 
-    # Calculate per minute stats
     game_duration_minutes = match_info["game_duration"] / 60 if match_info["game_duration"] > 0 else 1
 
-    # Insert participants
     participant_rows = []
     for p in match_data["info"]["participants"]:
         total_damage = p.get("totalDamageDealtToChampions", 0)
@@ -156,7 +174,6 @@ def insert_match_data(conn, match_data, region_id):
         ON CONFLICT DO NOTHING
     """, participant_rows)
 
-    # Insert bans
     ban_rows = []
     for team in match_data["info"].get("teams", []):
         team_id = team["teamId"]
@@ -205,13 +222,16 @@ def fetch_match(region_id, match_id):
 def main():
     logging.info("🚀 Starting match data extraction...")
 
+    conn = connect_db()
+
+    logging.info("🔄 Truncating existing data...")
+    truncate_tables(conn)
+
     while True:
         batch = fetch_unprocessed_match_ids(limit=50)
         if not batch:
-            logging.info("No unprocessed matches left. Exiting.")
+            logging.info("No unprocessed matches left. Exiting loop.")
             break
-
-        conn = connect_db()
 
         for match_id, region_id in batch:
             logging.info(f"Processing match {match_id}")
@@ -227,7 +247,12 @@ def main():
             else:
                 logging.warning(f"Skipping match {match_id} due to fetch failure.")
 
-        conn.close()
+    logging.info("💾 Exporting tables to CSV...")
+    for table in ["matches", "match_participants", "match_bans"]:
+        path = export_table_to_csv(conn, table)
+        logging.info(f"Exported {table} to {path}")
+
+    conn.close()
 
 if __name__ == "__main__":
     main()
