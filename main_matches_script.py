@@ -80,7 +80,7 @@ def truncate_tables(conn):
     conn.commit()
     cursor.close()
 
-def export_table_to_csv(conn, table_name, folder="data/exported"):
+def export_table_to_csv(conn, table_name, folder):
     os.makedirs(folder, exist_ok=True)
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM {table_name};")
@@ -248,8 +248,13 @@ def main():
                 logging.warning(f"Skipping match {match_id} due to fetch failure.")
 
     logging.info("💾 Exporting tables to CSV...")
-    for table in ["matches", "match_participants", "match_bans"]:
-        path = export_table_to_csv(conn, table)
+    tables_and_paths = {
+        "matches": "data/matches",
+        "match_participants": "data/match_participants",
+        "match_bans": "data/match_bans"
+    }
+    for table, folder in tables_and_paths.items():
+        path = export_table_to_csv(conn, table, folder)
         logging.info(f"Exported {table} to {path}")
 
     conn.close()
