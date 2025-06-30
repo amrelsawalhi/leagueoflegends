@@ -22,6 +22,7 @@ SUPABASE_DB_PASSWORD = os.getenv("SUPABASE_DB_PASSWORD")
 SUPABASE_DB_PORT = os.getenv("SUPABASE_DB_PORT", 5432)
 
 HEADERS = {"X-Riot-Token": API_KEY}
+QUEUE_ID = 420
 
 routing_map = {2: "europe", 3: "europe", 5: "asia", 8: "americas"}
 
@@ -64,7 +65,7 @@ def fetch_all_summoners():
 def fetch_match_ids(puuid, region):
     enforce_rate_limits()
     url = f"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids"
-    params = {"start": 0, "count": 50, "queue": 420}
+    params = {"start": 0, "count": 50, "queue": QUEUE_ID}
     try:
         resp = requests.get(url, headers=HEADERS, params=params, timeout=10)
         logging.info(f"[{puuid}] → {resp.status_code}")
@@ -80,24 +81,6 @@ def fetch_match_ids(puuid, region):
     except Exception as e:
         logging.error(f"❌ Match ID fetch failed: {e}")
     return []
-
-def fetch_queue_id(match_id, region):
-    enforce_rate_limits()
-    url = f"https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}"
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=10)
-        if resp.status_code == 200:
-            return resp.json().get("info", {}).get("queueId")
-        elif resp.status_code == 429:
-            retry = int(resp.headers.get("Retry-After", 10))
-            logging.warning(f"429 on match detail, sleeping {retry}s")
-            time.sleep(retry)
-            return fetch_queue_id(match_id, region)
-        else:
-            logging.warning(f"Non-200 from match {match_id}: {resp.status_code}")
-    except Exception as e:
-        logging.error(f"❌ Match detail fetch failed for {match_id}: {e}")
-    return None
 
 def main():
     all_rows = []
@@ -115,20 +98,18 @@ def main():
         match_ids = fetch_match_ids(puuid, region)
 
         for match_id in match_ids:
-            queue_id = fetch_queue_id(match_id, region)
-            if queue_id == 420:  # ranked solo only
-                row = {
-                    "match_id": match_id,
-                    "puuid": puuid,
-                    "region_id": region_id,
-                    "queue_id": queue_id
-                }
-                all_rows.append(row)
-                cursor.execute("""
-                    INSERT INTO match_ids (match_id, puuid, region_id, queue_id)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (match_id) DO NOTHING;
-                """, (match_id, puuid, region_id, queue_id))
+            row = {
+                "match_id": match_id,
+                "puuid": puuid,
+                "region_id": region_id,
+                "queue_id": QUEUE_ID
+            }
+            all_rows.append(row)
+            cursor.execute("""
+                INSERT INTO match_ids (match_id, puuid, region_id, queue_id)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (match_id) DO NOTHING;
+            """, (match_id, puuid, region_id, QUEUE_ID))
 
     conn.commit()
     cursor.close()
@@ -139,7 +120,7 @@ def main():
     now = datetime.now()
     date_str = now.strftime("%-d-%B-%Y").lower()
     os.makedirs("data", exist_ok=True)
-    csv_filename = f"data/match_ids_{date_str}.csv"
+    csv_filename = f"data/matchids/match_ids_{date_str}.csv"
     pd.DataFrame(all_rows).to_csv(csv_filename, index=False)
     logging.info(f"📁 Saved to {csv_filename}")
 
