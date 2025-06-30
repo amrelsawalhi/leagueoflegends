@@ -24,7 +24,12 @@ SUPABASE_DB_PORT = os.getenv("SUPABASE_DB_PORT", 5432)
 HEADERS = {"X-Riot-Token": API_KEY}
 QUEUE_ID = 420
 
-routing_map = {2: "europe", 3: "europe", 5: "asia", 8: "americas"}
+routing_map = {
+    2: "europe",   # na1 mapped to europe proxy
+    3: "europe",   # euw1
+    5: "asia",     # kr
+    8: "americas"  # br1 or others
+}
 
 api_calls = deque()
 
@@ -119,8 +124,9 @@ def main():
     # Save CSV
     now = datetime.now()
     date_str = now.strftime("%-d-%B-%Y").lower()
-    os.makedirs("data", exist_ok=True)
-    csv_filename = f"data/matchids/match_ids_{date_str}.csv"
+    csv_dir = "data/matchids"
+    os.makedirs(csv_dir, exist_ok=True)
+    csv_filename = f"{csv_dir}/match_ids_{date_str}.csv"
     pd.DataFrame(all_rows).to_csv(csv_filename, index=False)
     logging.info(f"📁 Saved to {csv_filename}")
 
