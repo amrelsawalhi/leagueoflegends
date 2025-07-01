@@ -2,9 +2,7 @@ name: Fetch Summoners Data
 
 on:
   workflow_dispatch:   # allows manual trigger
-  schedule:
-    - cron: '0 2 * * 1'  # every Monday at 2:00 AM UTC
-
+  
 jobs:
   fetch-summoners:
     runs-on: ubuntu-latest
