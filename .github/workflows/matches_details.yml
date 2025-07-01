@@ -2,9 +2,7 @@ name: Match Data Extraction
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 2 * * *"  # Every day at 02:00 UTC
-
+ 
 jobs:
   run-match-extraction:
     runs-on: ubuntu-latest
