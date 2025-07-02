@@ -1,7 +1,8 @@
 # League of Legends Data Pipeline & Dashboard
 
-![Database Schema](https://github.com/amrelsawalhi/leagueoflegends/blob/55c5faefd70260391cd147f47d894f2e1329197c/database_schema.png)
 ![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/dashboard.png)
+
+
 
 ## 📌 Project Summary
 
@@ -37,7 +38,7 @@ This end-to-end data engineering project automates the collection, transformatio
 - Modeled as a snowflake schema with:
   - `summoners`, `champions`, `tiers`, `regions` (dimensions)
   - `matches`, `match_participants`, `match_bans` (facts)
-- See `database_schema.png` for the ERD.
+  ![Database Schema](https://github.com/amrelsawalhi/leagueoflegends/blob/55c5faefd70260391cd147f47d894f2e1329197c/database_schema.png)
 
 **3. Aggregation & Export**
 - `export_view.py`: Creates and exports a fact view (`fact_champion_stats.csv`) for Power BI.
