@@ -22,7 +22,6 @@ SUPABASE_DB_PORT = os.getenv("SUPABASE_DB_PORT", 5432)
 
 HEADERS = {"X-Riot-Token": API_KEY}
 
-# Rate limiting: 20 requests/second, 100 requests/2 minutes
 api_calls = deque()
 
 def enforce_rate_limits():
@@ -64,6 +63,15 @@ def fetch_unprocessed_match_ids(limit=50):
     conn.close()
     return rows
 
+def get_remaining_matches_count():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM match_ids WHERE processed = FALSE")
+    count = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+    return count
+
 def mark_match_processed(match_id):
     conn = connect_db()
     cursor = conn.cursor()
@@ -71,14 +79,6 @@ def mark_match_processed(match_id):
     conn.commit()
     cursor.close()
     conn.close()
-
-def truncate_tables(conn):
-    cursor = conn.cursor()
-    cursor.execute("TRUNCATE TABLE match_bans CASCADE;")
-    cursor.execute("TRUNCATE TABLE match_participants CASCADE;")
-    cursor.execute("TRUNCATE TABLE matches CASCADE;")
-    conn.commit()
-    cursor.close()
 
 def export_table_to_csv(conn, table_name, folder):
     os.makedirs(folder, exist_ok=True)
@@ -94,7 +94,6 @@ def export_table_to_csv(conn, table_name, folder):
 
 def insert_match_data(conn, match_data, region_id):
     cursor = conn.cursor()
-
     match_info = {
         "match_id": match_data["metadata"]["matchId"],
         "game_duration": match_data["info"]["gameDuration"],
@@ -224,13 +223,14 @@ def main():
 
     conn = connect_db()
 
-    logging.info("🔄 Truncating existing data...")
-    truncate_tables(conn)
-
     while True:
+        remaining = get_remaining_matches_count()
+        logging.info(f"🧮 Remaining unprocessed matches: {remaining}")
+        if remaining == 0:
+            break
+
         batch = fetch_unprocessed_match_ids(limit=50)
         if not batch:
-            logging.info("No unprocessed matches left. Exiting loop.")
             break
 
         for match_id, region_id in batch:
@@ -240,12 +240,12 @@ def main():
                 try:
                     insert_match_data(conn, match_data, region_id)
                     mark_match_processed(match_id)
-                    logging.info(f"Match {match_id} processed successfully.")
+                    logging.info(f"✅ Match {match_id} processed.")
                 except Exception as e:
-                    logging.error(f"DB insert error for match {match_id}: {e}")
+                    logging.error(f"❌ DB insert error for match {match_id}: {e}")
                     conn.rollback()
             else:
-                logging.warning(f"Skipping match {match_id} due to fetch failure.")
+                logging.warning(f"⚠️ Skipping match {match_id} due to fetch failure.")
 
     logging.info("💾 Exporting tables to CSV...")
     tables_and_paths = {
@@ -254,8 +254,8 @@ def main():
         "match_bans": "data/match_bans"
     }
     for table, folder in tables_and_paths.items():
-        path = export_table_to_csv(conn, table, folder)
-        logging.info(f"Exported {table} to {path}")
+        path = export_table_to_csv(conn, table)
+        logging.info(f"📁 Exported {table} to {path}")
 
     conn.close()
 
