@@ -1,7 +1,7 @@
 name: Fetch Match IDs
 
 on:
-  workflow_dispatch:       # Manual trigger available
+  workflow_dispatch:       
 
 jobs:
   fetch-match-ids:
