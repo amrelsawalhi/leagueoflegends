@@ -27,7 +27,7 @@ jobs:
           SUPABASE_DB_NAME: ${{ secrets.SUPABASE_DB_NAME }}
           SUPABASE_DB_USER: ${{ secrets.SUPABASE_DB_USER }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-        run: python export_dimensions_once.py
+        run: python pull_dimensions.py
 
       - name: Commit CSVs
         run: |
