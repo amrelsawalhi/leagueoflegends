@@ -2,8 +2,8 @@ name: Export Champion Stats View
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Daily at 6 AM UTC
-  workflow_dispatch:     # Manual trigger
+    - cron: '0 6 * * *'  # daily at 6 AM UTC
+  workflow_dispatch:     # manual trigger
 
 jobs:
   export:
@@ -17,16 +17,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Dependencies
-        run: pip install pandas sqlalchemy psycopg2-binary
+      - name: Install dependencies
+        run: pip install pandas psycopg2-binary
 
-      - name: Run Export Script
+      - name: Export View to CSV
         env:
-          PGHOST: ${{ secrets.PGHOST }}
-          PGPORT: ${{ secrets.PGPORT }}
-          PGDATABASE: ${{ secrets.PGDATABASE }}
-          PGUSER: ${{ secrets.PGUSER }}
-          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          SUPABASE_DB_HOST: ${{ secrets.SUPABASE_DB_HOST }}
+          SUPABASE_DB_PORT: ${{ secrets.SUPABASE_DB_PORT }}
+          SUPABASE_DB_NAME: ${{ secrets.SUPABASE_DB_NAME }}
+          SUPABASE_DB_USER: ${{ secrets.SUPABASE_DB_USER }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: python export_view.py
 
       - name: Commit and Push CSV
@@ -34,5 +34,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add data/fact_champion_stats.csv
-          git commit -m "Auto-exported fact_champion_stats" || echo "No changes to commit"
+          git commit -m "Auto-exported view" || echo "No changes"
           git push
