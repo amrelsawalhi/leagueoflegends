@@ -107,5 +107,6 @@ scripts/
     export_view.py
 lol_dashboard.pbix
 database_schema.png
+dashboard.png
 README.md
 ```
