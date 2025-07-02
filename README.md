@@ -1,7 +1,7 @@
 # League of Legends Data Pipeline & Dashboard
 
 ![Database Schema](https://github.com/amrelsawalhi/leagueoflegends/blob/55c5faefd70260391cd147f47d894f2e1329197c/database_schema.png)
-![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/63e30a3f25afc3f6601d4462c611fabec3bb84ff/dashboard.png)
+![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/dashboard.png)
 
 ## 📌 Project Summary
 
@@ -62,7 +62,7 @@ The dashboard showcases:
 - Time-based trends in ranked meta.
 - Role popularity and performance.
 
-📎 Download it here: [lol_dashboard.pbix](https://github.com/amrelsawalhi/leagueoflegends/raw/main/lol_dashboard.pbix)
+📎 Download it here: [lol_dashboard.pbix](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/lol_dashboard.pbix)
 
 ---
 
