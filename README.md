@@ -58,9 +58,10 @@ This end-to-end data engineering project automates the collection, transformatio
 
 The dashboard showcases:
 - Champion performance metrics.
-- Tier breakdown.
-- Time-based trends in ranked meta.
-- Role popularity and performance.
+- Champion popularity (pick_rate)
+- Tier, Server and Champion slicers.
+- Time-based trends in ranked meta (to be added later).
+- Role popularity and performance (to be added later).
 
 📎 Download it here: [lol_dashboard.pbix](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/lol_dashboard.pbix)
 
