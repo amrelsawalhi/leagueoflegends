@@ -1,7 +1,7 @@
 name: Export Champion Stats View
 
 on:
-  workflow_dispatch:     # manual trigger
+  workflow_dispatch:    
 
 jobs:
   export:
