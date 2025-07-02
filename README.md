@@ -12,6 +12,7 @@ This end-to-end data engineering project automates the collection, transformatio
 - Building a dimensional schema to support analytics.
 - Automating workflows via GitHub Actions.
 - Power BI dashboard design for insight delivery.
+- Full pipeline and infrastructure are entirely cloud-based — no local setup required.
 
 ---
 
