@@ -1,7 +1,7 @@
 name: Export Dimension Tables
 
 on:
-  workflow_dispatch:  # Trigger manually from GitHub UI
+  workflow_dispatch:  
 
 jobs:
   export:
