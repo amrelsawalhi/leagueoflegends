@@ -1,10 +1,8 @@
 import requests
 import time
 import psycopg2
-import pandas as pd
 import os
 import logging
-from datetime import datetime
 from collections import deque
 
 # Setup logging
@@ -25,10 +23,10 @@ HEADERS = {"X-Riot-Token": API_KEY}
 QUEUE_ID = 420
 
 routing_map = {
-    2: "europe",   # na1 mapped to europe proxy
-    3: "europe",   # euw1
-    5: "asia",     # kr
-    8: "americas"  # br1 or others
+    2: "europe",
+    3: "europe",
+    5: "asia",
+    8: "americas"
 }
 
 api_calls = deque()
@@ -88,7 +86,6 @@ def fetch_match_ids(puuid, region):
     return []
 
 def main():
-    all_rows = []
     logging.info("🚀 Starting match ID fetch...")
 
     summoners = fetch_all_summoners()
@@ -98,37 +95,23 @@ def main():
     cursor = conn.cursor()
     cursor.execute("TRUNCATE TABLE match_ids;")
 
+    inserted = 0
     for puuid, region_id in summoners:
         region = routing_map.get(region_id, "europe")
         match_ids = fetch_match_ids(puuid, region)
 
         for match_id in match_ids:
-            row = {
-                "match_id": match_id,
-                "puuid": puuid,
-                "region_id": region_id,
-                "queue_id": QUEUE_ID
-            }
-            all_rows.append(row)
             cursor.execute("""
                 INSERT INTO match_ids (match_id, puuid, region_id, queue_id)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (match_id) DO NOTHING;
             """, (match_id, puuid, region_id, QUEUE_ID))
+            inserted += 1
 
     conn.commit()
     cursor.close()
     conn.close()
-    logging.info(f"✅ DB update complete — {len(all_rows)} matches inserted")
-
-    # Save CSV
-    now = datetime.now()
-    date_str = now.strftime("%-d-%B-%Y").lower()
-    csv_dir = "data/matchids"
-    os.makedirs(csv_dir, exist_ok=True)
-    csv_filename = f"{csv_dir}/match_ids_{date_str}.csv"
-    pd.DataFrame(all_rows).to_csv(csv_filename, index=False)
-    logging.info(f"📁 Saved to {csv_filename}")
+    logging.info(f"✅ DB update complete — {inserted} matches inserted")
 
 if __name__ == "__main__":
     main()
