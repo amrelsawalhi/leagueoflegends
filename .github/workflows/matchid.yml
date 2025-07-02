@@ -31,12 +31,3 @@ jobs:
 
       - name: Run match ID extraction
         run: python matchids_extraction.py
-
-      - name: Push CSV to repo
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git pull origin main
-          git add data/matchids/match_ids_*.csv
-          git commit -m "Update match IDs CSV [skip ci]" || echo "No changes to commit"
-          git push origin main
