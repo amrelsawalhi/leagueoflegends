@@ -2,7 +2,8 @@ name: Export Champion Stats View
 
 on:
   workflow_dispatch:    
-
+  schedule:
+    - cron: '0 10 * * 2'
 jobs:
   export:
     runs-on: ubuntu-latest
