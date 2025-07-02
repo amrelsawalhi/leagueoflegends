@@ -4,7 +4,6 @@ import psycopg2
 import logging
 from collections import deque
 import os
-import pandas as pd
 
 # Setup logging
 logging.basicConfig(
@@ -79,18 +78,6 @@ def mark_match_processed(match_id):
     conn.commit()
     cursor.close()
     conn.close()
-
-def export_table_to_csv(conn, table_name, folder):
-    os.makedirs(folder, exist_ok=True)
-    cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM {table_name};")
-    rows = cursor.fetchall()
-    colnames = [desc[0] for desc in cursor.description]
-    df = pd.DataFrame(rows, columns=colnames)
-    csv_path = os.path.join(folder, f"{table_name}.csv")
-    df.to_csv(csv_path, index=False)
-    cursor.close()
-    return csv_path
 
 def insert_match_data(conn, match_data, region_id):
     cursor = conn.cursor()
@@ -247,17 +234,8 @@ def main():
             else:
                 logging.warning(f"⚠️ Skipping match {match_id} due to fetch failure.")
 
-    logging.info("💾 Exporting tables to CSV...")
-    tables_and_paths = {
-        "matches": "data/matches",
-        "match_participants": "data/match_participants",
-        "match_bans": "data/match_bans"
-    }
-    for table, folder in tables_and_paths.items():
-        path = export_table_to_csv(conn, table)
-        logging.info(f"📁 Exported {table} to {path}")
-
     conn.close()
+    logging.info("🏁 Finished all processing.")
 
 if __name__ == "__main__":
     main()
