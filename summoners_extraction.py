@@ -133,17 +133,13 @@ def main():
 
     logging.info(f"🔍 Total summoners fetched: {len(all_summoners)}")
 
-    # Save CSV
-    now = datetime.now()
-    date_str = now.strftime("%-d-%B-%Y").lower()
-    os.makedirs("data", exist_ok=True)
-    csv_filename = f"data/summoners_{date_str}.csv"
-    pd.DataFrame(all_summoners).to_csv(csv_filename, index=False)
-    logging.info(f"📁 Saved to {csv_filename}")
-
     # DB insert
     conn = connect_db()
     cursor = conn.cursor()
+
+    logging.info("🧹 Truncating summoners table...")
+    cursor.execute("TRUNCATE TABLE summoners")
+
     logging.info("🛠️ Inserting into database...")
     inserted = 0
     for summoner in all_summoners:
@@ -153,6 +149,7 @@ def main():
     cursor.close()
     conn.close()
     logging.info(f"✅ DB update complete — {inserted} rows inserted")
+
 
 if __name__ == "__main__":
     main()
