@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment
+.env
+.env.*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Data files
+*.pbix
+
+# Logs and cache
+*.log
+*.sqlite
+*.db
+
+# VS Code settings
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python virtual environment
+venv/
+.venv/
