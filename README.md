@@ -99,12 +99,12 @@ data/
     regions.csv
     tiers.csv
     summoners_<date>.csv
-scripts/
-    pull_dimensions.py
-    summoner_extraction.py
-    matchids_extraction.py
-    main_matches_script.py
-    export_view.py
+
+pull_dimensions.py
+summoner_extraction.py
+matchids_extraction.py
+main_matches_script.py
+export_view.py
 lol_dashboard.pbix
 database_schema.png
 dashboard.png
