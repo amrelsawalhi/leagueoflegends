@@ -1,22 +1,31 @@
+import psycopg2
 import pandas as pd
-from sqlalchemy import create_engine
 import os
 
-# Load credentials from GitHub Actions secrets
+# Load from GitHub secrets (must be set in Actions → Secrets)
 DB_HOST = os.environ["SUPABASE_DB_HOST"]
-DB_PORT = os.environ["SUPABASE_DB_NAME"]
-DB_NAME = os.environ["SUPABASE_DB_USER"]
-DB_USER = os.environ["SUPABASE_DB_PASSWORD"]
-DB_PASS = os.environ["SUPABASE_DB_PORT"]
+DB_PORT = os.environ.get("SUPABASE_DB_PORT", "5432")  # default to 5432
+DB_NAME = os.environ["SUPABASE_DB_NAME"]
+DB_USER = os.environ["SUPABASE_DB_USER"]
+DB_PASS = os.environ["SUPABASE_DB_PASSWORD"]
 
-# Build connection
-uri = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-engine = create_engine(uri)
+# Connect using psycopg2
+conn = psycopg2.connect(
+    host=DB_HOST,
+    port=DB_PORT,
+    dbname=DB_NAME,
+    user=DB_USER,
+    password=DB_PASS
+)
 
 # Query the view
 query = "SELECT * FROM fact_champion_stats;"
-df = pd.read_sql(query, engine)
+df = pd.read_sql_query(query, conn)
 
-# Save the CSV
-df.to_csv("data/fact_champion_stats.csv", index=False)
-print("✅ Export complete")
+# Save as CSV
+output_path = "data/fact_champion_stats.csv"
+df.to_csv(output_path, index=False)
+
+print(f"✅ Exported to {output_path}")
+
+conn.close()
