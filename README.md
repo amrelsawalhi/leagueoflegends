@@ -117,7 +117,7 @@ data/
 streamlit/
     background.png
     streamlit_app.py
-
+    streamlit_sc.png
 pull_dimensions.py
 summoner_extraction.py
 matchids_extraction.py
