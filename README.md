@@ -1,6 +1,6 @@
 # League of Legends Data Pipeline & Dashboard
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://lol-stats.streamlit.app/)
+![Streamlit App](https://raw.githubusercontent.com/amrelsawalhi/leagueoflegends/a59f439dea6c37c63132f67e0d8e1f14dcc370ed/streamlit/streamlit.png)
 ![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/dashboard.png)
 
 
