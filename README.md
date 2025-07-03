@@ -1,5 +1,6 @@
 # League of Legends Data Pipeline & Dashboard
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://lol-stats.streamlit.app/)
 ![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/dashboard.png)
 
 
@@ -69,6 +70,14 @@ The dashboard showcases:
 
 ---
 
+## 🌐 Live Web App (Streamlit)
+
+You can explore the champion stats interactively on a live dashboard powered by **Streamlit**:
+
+👉 [lol-stats.streamlit.app](https://lol-stats.streamlit.app/)
+
+---
+
 ## 🚧 Challenges Faced
 
 - **Rate Limiting**: Handled via recursive backoff and deque tracking.
@@ -102,6 +111,9 @@ data/
     regions.csv
     tiers.csv
     summoners_<date>.csv
+streamlit/
+    background.png
+    streamlit_app.py
 
 pull_dimensions.py
 summoner_extraction.py
