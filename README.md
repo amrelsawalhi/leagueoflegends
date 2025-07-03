@@ -1,6 +1,9 @@
 # League of Legends Data Pipeline & Dashboard
 
+## 🌐 Streamlit Dashboard
 ![Streamlit App](https://raw.githubusercontent.com/amrelsawalhi/leagueoflegends/cd84d8711c5501c629053eb7072b6d26ad4920b1/streamlit/streamlit_sc.png)
+
+## 📊 Power BI Dashboard
 ![Dashboard](https://github.com/amrelsawalhi/leagueoflegends/blob/62282077134094093ff5ed2954b59369fdb3c17b/dashboard.png)
 
 
