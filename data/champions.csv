@@ -1,171 +1,171 @@
 champion_id,champion_key,name,title,is_active
-1,Annie,Annie,the Dark Child,true
-2,Olaf,Olaf,the Berserker,true
-3,Galio,Galio,the Colossus,true
-4,TwistedFate,Twisted Fate,the Card Master,true
-5,XinZhao,Xin Zhao,the Seneschal of Demacia,true
-6,Urgot,Urgot,the Dreadnought,true
-7,Leblanc,LeBlanc,the Deceiver,true
-8,Vladimir,Vladimir,the Crimson Reaper,true
-9,Fiddlesticks,Fiddlesticks,the Ancient Fear,true
-10,Kayle,Kayle,the Righteous,true
-11,MasterYi,Master Yi,the Wuju Bladesman,true
-12,Alistar,Alistar,the Minotaur,true
-13,Ryze,Ryze,the Rune Mage,true
-14,Sion,Sion,The Undead Juggernaut,true
-15,Sivir,Sivir,the Battle Mistress,true
-16,Soraka,Soraka,the Starchild,true
-17,Teemo,Teemo,the Swift Scout,true
-18,Tristana,Tristana,the Yordle Gunner,true
-19,Warwick,Warwick,the Uncaged Wrath of Zaun,true
-20,Nunu,Nunu & Willump,the Boy and His Yeti,true
-21,MissFortune,Miss Fortune,the Bounty Hunter,true
-22,Ashe,Ashe,the Frost Archer,true
-23,Tryndamere,Tryndamere,the Barbarian King,true
-24,Jax,Jax,Grandmaster at Arms,true
-25,Morgana,Morgana,the Fallen,true
-26,Zilean,Zilean,the Chronokeeper,true
-27,Singed,Singed,the Mad Chemist,true
-28,Evelynn,Evelynn,Agony's Embrace,true
-29,Twitch,Twitch,the Plague Rat,true
-30,Karthus,Karthus,the Deathsinger,true
-31,Chogath,Cho'Gath,the Terror of the Void,true
-32,Amumu,Amumu,the Sad Mummy,true
-33,Rammus,Rammus,the Armordillo,true
-34,Anivia,Anivia,the Cryophoenix,true
-35,Shaco,Shaco,the Demon Jester,true
-36,DrMundo,Dr. Mundo,the Madman of Zaun,true
-37,Sona,Sona,Maven of the Strings,true
-38,Kassadin,Kassadin,the Void Walker,true
-39,Irelia,Irelia,the Blade Dancer,true
-40,Janna,Janna,the Storm's Fury,true
-41,Gangplank,Gangplank,the Saltwater Scourge,true
-42,Corki,Corki,the Daring Bombardier,true
-43,Karma,Karma,the Enlightened One,true
-44,Taric,Taric,the Shield of Valoran,true
-45,Veigar,Veigar,the Tiny Master of Evil,true
-48,Trundle,Trundle,the Troll King,true
-50,Swain,Swain,the Noxian Grand General,true
-51,Caitlyn,Caitlyn,the Sheriff of Piltover,true
-53,Blitzcrank,Blitzcrank,the Great Steam Golem,true
-54,Malphite,Malphite,Shard of the Monolith,true
-55,Katarina,Katarina,the Sinister Blade,true
-56,Nocturne,Nocturne,the Eternal Nightmare,true
-57,Maokai,Maokai,the Twisted Treant,true
-58,Renekton,Renekton,the Butcher of the Sands,true
-59,JarvanIV,Jarvan IV,the Exemplar of Demacia,true
-60,Elise,Elise,the Spider Queen,true
-61,Orianna,Orianna,the Lady of Clockwork,true
-62,MonkeyKing,Wukong,the Monkey King,true
-63,Brand,Brand,the Burning Vengeance,true
-64,LeeSin,Lee Sin,the Blind Monk,true
-67,Vayne,Vayne,the Night Hunter,true
-68,Rumble,Rumble,the Mechanized Menace,true
-69,Cassiopeia,Cassiopeia,the Serpent's Embrace,true
-72,Skarner,Skarner,the Primordial Sovereign,true
-74,Heimerdinger,Heimerdinger,the Revered Inventor,true
-75,Nasus,Nasus,the Curator of the Sands,true
-76,Nidalee,Nidalee,the Bestial Huntress,true
-77,Udyr,Udyr,the Spirit Walker,true
-78,Poppy,Poppy,Keeper of the Hammer,true
-79,Gragas,Gragas,the Rabble Rouser,true
-80,Pantheon,Pantheon,the Unbreakable Spear,true
-81,Ezreal,Ezreal,the Prodigal Explorer,true
-82,Mordekaiser,Mordekaiser,the Iron Revenant,true
-83,Yorick,Yorick,Shepherd of Souls,true
-84,Akali,Akali,the Rogue Assassin,true
-85,Kennen,Kennen,the Heart of the Tempest,true
-86,Garen,Garen,The Might of Demacia,true
-89,Leona,Leona,the Radiant Dawn,true
-90,Malzahar,Malzahar,the Prophet of the Void,true
-91,Talon,Talon,the Blade's Shadow,true
-92,Riven,Riven,the Exile,true
-96,KogMaw,Kog'Maw,the Mouth of the Abyss,true
-98,Shen,Shen,the Eye of Twilight,true
-99,Lux,Lux,the Lady of Luminosity,true
-101,Xerath,Xerath,the Magus Ascendant,true
-102,Shyvana,Shyvana,the Half-Dragon,true
-103,Ahri,Ahri,the Nine-Tailed Fox,true
-104,Graves,Graves,the Outlaw,true
-105,Fizz,Fizz,the Tidal Trickster,true
-106,Volibear,Volibear,the Relentless Storm,true
-107,Rengar,Rengar,the Pridestalker,true
-110,Varus,Varus,the Arrow of Retribution,true
-111,Nautilus,Nautilus,the Titan of the Depths,true
-112,Viktor,Viktor,the Herald of the Arcane,true
-113,Sejuani,Sejuani,Fury of the North,true
-114,Fiora,Fiora,the Grand Duelist,true
-115,Ziggs,Ziggs,the Hexplosives Expert,true
-117,Lulu,Lulu,the Fae Sorceress,true
-119,Draven,Draven,the Glorious Executioner,true
-120,Hecarim,Hecarim,the Shadow of War,true
-121,Khazix,Kha'Zix,the Voidreaver,true
-122,Darius,Darius,the Hand of Noxus,true
-126,Jayce,Jayce,the Defender of Tomorrow,true
-127,Lissandra,Lissandra,the Ice Witch,true
-131,Diana,Diana,Scorn of the Moon,true
-133,Quinn,Quinn,Demacia's Wings,true
-134,Syndra,Syndra,the Dark Sovereign,true
-136,AurelionSol,Aurelion Sol,The Star Forger,true
-141,Kayn,Kayn,the Shadow Reaper,true
-142,Zoe,Zoe,the Aspect of Twilight,true
-143,Zyra,Zyra,Rise of the Thorns,true
-145,Kaisa,Kai'Sa,Daughter of the Void,true
-147,Seraphine,Seraphine,the Starry-Eyed Songstress,true
-150,Gnar,Gnar,the Missing Link,true
-154,Zac,Zac,the Secret Weapon,true
-157,Yasuo,Yasuo,the Unforgiven,true
-161,Velkoz,Vel'Koz,the Eye of the Void,true
-163,Taliyah,Taliyah,the Stoneweaver,true
-164,Camille,Camille,the Steel Shadow,true
-166,Akshan,Akshan,the Rogue Sentinel,true
-200,Belveth,Bel'Veth,the Empress of the Void,true
-201,Braum,Braum,the Heart of the Freljord,true
-202,Jhin,Jhin,the Virtuoso,true
-203,Kindred,Kindred,The Eternal Hunters,true
-221,Zeri,Zeri,The Spark of Zaun,true
-222,Jinx,Jinx,the Loose Cannon,true
-223,TahmKench,Tahm Kench,The River King,true
-233,Briar,Briar,the Restrained Hunger,true
-234,Viego,Viego,The Ruined King,true
-235,Senna,Senna,the Redeemer,true
-236,Lucian,Lucian,the Purifier,true
-238,Zed,Zed,the Master of Shadows,true
-240,Kled,Kled,the Cantankerous Cavalier,true
-245,Ekko,Ekko,the Boy Who Shattered Time,true
-246,Qiyana,Qiyana,Empress of the Elements,true
-254,Vi,Vi,the Piltover Enforcer,true
-266,Aatrox,Aatrox,the Darkin Blade,true
-267,Nami,Nami,the Tidecaller,true
-268,Azir,Azir,the Emperor of the Sands,true
-350,Yuumi,Yuumi,the Magical Cat,true
-360,Samira,Samira,the Desert Rose,true
-412,Thresh,Thresh,the Chain Warden,true
-420,Illaoi,Illaoi,the Kraken Priestess,true
-421,RekSai,Rek'Sai,the Void Burrower,true
-427,Ivern,Ivern,the Green Father,true
-429,Kalista,Kalista,the Spear of Vengeance,true
-432,Bard,Bard,the Wandering Caretaker,true
-497,Rakan,Rakan,The Charmer,true
-498,Xayah,Xayah,the Rebel,true
-516,Ornn,Ornn,The Fire below the Mountain,true
-517,Sylas,Sylas,the Unshackled,true
-518,Neeko,Neeko,the Curious Chameleon,true
-523,Aphelios,Aphelios,the Weapon of the Faithful,true
-526,Rell,Rell,the Iron Maiden,true
-555,Pyke,Pyke,the Bloodharbor Ripper,true
-711,Vex,Vex,the Gloomist,true
-777,Yone,Yone,the Unforgotten,true
-799,Ambessa,Ambessa,Matriarch of War,true
-800,Mel,Mel,the Soul's Reflection,true
-875,Sett,Sett,the Boss,true
-876,Lillia,Lillia,the Bashful Bloom,true
-887,Gwen,Gwen,The Hallowed Seamstress,true
-888,Renata,Renata Glasc,the Chem-Baroness,true
-893,Aurora,Aurora,the Witch Between Worlds,true
-895,Nilah,Nilah,the Joy Unbound,true
-897,KSante,K'Sante,the Pride of Nazumah,true
-901,Smolder,Smolder,the Fiery Fledgling,true
-902,Milio,Milio,The Gentle Flame,true
-910,Hwei,Hwei,the Visionary,true
-950,Naafiri,Naafiri,the Hound of a Hundred Bites,true
+266,Aatrox,Aatrox,the Darkin Blade,True
+103,Ahri,Ahri,the Nine-Tailed Fox,True
+84,Akali,Akali,the Rogue Assassin,True
+166,Akshan,Akshan,the Rogue Sentinel,True
+12,Alistar,Alistar,the Minotaur,True
+799,Ambessa,Ambessa,Matriarch of War,True
+32,Amumu,Amumu,the Sad Mummy,True
+34,Anivia,Anivia,the Cryophoenix,True
+1,Annie,Annie,the Dark Child,True
+523,Aphelios,Aphelios,the Weapon of the Faithful,True
+22,Ashe,Ashe,the Frost Archer,True
+136,AurelionSol,Aurelion Sol,The Star Forger,True
+893,Aurora,Aurora,the Witch Between Worlds,True
+268,Azir,Azir,the Emperor of the Sands,True
+432,Bard,Bard,the Wandering Caretaker,True
+200,Belveth,Bel'Veth,the Empress of the Void,True
+53,Blitzcrank,Blitzcrank,the Great Steam Golem,True
+63,Brand,Brand,the Burning Vengeance,True
+201,Braum,Braum,the Heart of the Freljord,True
+233,Briar,Briar,the Restrained Hunger,True
+51,Caitlyn,Caitlyn,the Sheriff of Piltover,True
+164,Camille,Camille,the Steel Shadow,True
+69,Cassiopeia,Cassiopeia,the Serpent's Embrace,True
+31,Chogath,Cho'Gath,the Terror of the Void,True
+42,Corki,Corki,the Daring Bombardier,True
+122,Darius,Darius,the Hand of Noxus,True
+131,Diana,Diana,Scorn of the Moon,True
+119,Draven,Draven,the Glorious Executioner,True
+36,DrMundo,Dr. Mundo,the Madman of Zaun,True
+245,Ekko,Ekko,the Boy Who Shattered Time,True
+60,Elise,Elise,the Spider Queen,True
+28,Evelynn,Evelynn,Agony's Embrace,True
+81,Ezreal,Ezreal,the Prodigal Explorer,True
+9,Fiddlesticks,Fiddlesticks,the Ancient Fear,True
+114,Fiora,Fiora,the Grand Duelist,True
+105,Fizz,Fizz,the Tidal Trickster,True
+3,Galio,Galio,the Colossus,True
+41,Gangplank,Gangplank,the Saltwater Scourge,True
+86,Garen,Garen,The Might of Demacia,True
+150,Gnar,Gnar,the Missing Link,True
+79,Gragas,Gragas,the Rabble Rouser,True
+104,Graves,Graves,the Outlaw,True
+887,Gwen,Gwen,The Hallowed Seamstress,True
+120,Hecarim,Hecarim,the Shadow of War,True
+74,Heimerdinger,Heimerdinger,the Revered Inventor,True
+910,Hwei,Hwei,the Visionary,True
+420,Illaoi,Illaoi,the Kraken Priestess,True
+39,Irelia,Irelia,the Blade Dancer,True
+427,Ivern,Ivern,the Green Father,True
+40,Janna,Janna,the Storm's Fury,True
+59,JarvanIV,Jarvan IV,the Exemplar of Demacia,True
+24,Jax,Jax,Grandmaster at Arms,True
+126,Jayce,Jayce,the Defender of Tomorrow,True
+202,Jhin,Jhin,the Virtuoso,True
+222,Jinx,Jinx,the Loose Cannon,True
+145,Kaisa,Kai'Sa,Daughter of the Void,True
+429,Kalista,Kalista,the Spear of Vengeance,True
+43,Karma,Karma,the Enlightened One,True
+30,Karthus,Karthus,the Deathsinger,True
+38,Kassadin,Kassadin,the Void Walker,True
+55,Katarina,Katarina,the Sinister Blade,True
+10,Kayle,Kayle,the Righteous,True
+141,Kayn,Kayn,the Shadow Reaper,True
+85,Kennen,Kennen,the Heart of the Tempest,True
+121,Khazix,Kha'Zix,the Voidreaver,True
+203,Kindred,Kindred,The Eternal Hunters,True
+240,Kled,Kled,the Cantankerous Cavalier,True
+96,KogMaw,Kog'Maw,the Mouth of the Abyss,True
+897,KSante,K'Sante,the Pride of Nazumah,True
+7,Leblanc,LeBlanc,the Deceiver,True
+64,LeeSin,Lee Sin,the Blind Monk,True
+89,Leona,Leona,the Radiant Dawn,True
+876,Lillia,Lillia,the Bashful Bloom,True
+127,Lissandra,Lissandra,the Ice Witch,True
+236,Lucian,Lucian,the Purifier,True
+117,Lulu,Lulu,the Fae Sorceress,True
+99,Lux,Lux,the Lady of Luminosity,True
+54,Malphite,Malphite,Shard of the Monolith,True
+90,Malzahar,Malzahar,the Prophet of the Void,True
+57,Maokai,Maokai,the Twisted Treant,True
+11,MasterYi,Master Yi,the Wuju Bladesman,True
+800,Mel,Mel,the Soul's Reflection,True
+902,Milio,Milio,The Gentle Flame,True
+21,MissFortune,Miss Fortune,the Bounty Hunter,True
+62,MonkeyKing,Wukong,the Monkey King,True
+82,Mordekaiser,Mordekaiser,the Iron Revenant,True
+25,Morgana,Morgana,the Fallen,True
+950,Naafiri,Naafiri,the Hound of a Hundred Bites,True
+267,Nami,Nami,the Tidecaller,True
+75,Nasus,Nasus,the Curator of the Sands,True
+111,Nautilus,Nautilus,the Titan of the Depths,True
+518,Neeko,Neeko,the Curious Chameleon,True
+76,Nidalee,Nidalee,the Bestial Huntress,True
+895,Nilah,Nilah,the Joy Unbound,True
+56,Nocturne,Nocturne,the Eternal Nightmare,True
+20,Nunu,Nunu & Willump,the Boy and His Yeti,True
+2,Olaf,Olaf,the Berserker,True
+61,Orianna,Orianna,the Lady of Clockwork,True
+516,Ornn,Ornn,The Fire below the Mountain,True
+80,Pantheon,Pantheon,the Unbreakable Spear,True
+78,Poppy,Poppy,Keeper of the Hammer,True
+555,Pyke,Pyke,the Bloodharbor Ripper,True
+246,Qiyana,Qiyana,Empress of the Elements,True
+133,Quinn,Quinn,Demacia's Wings,True
+497,Rakan,Rakan,The Charmer,True
+33,Rammus,Rammus,the Armordillo,True
+421,RekSai,Rek'Sai,the Void Burrower,True
+526,Rell,Rell,the Iron Maiden,True
+888,Renata,Renata Glasc,the Chem-Baroness,True
+58,Renekton,Renekton,the Butcher of the Sands,True
+107,Rengar,Rengar,the Pridestalker,True
+92,Riven,Riven,the Exile,True
+68,Rumble,Rumble,the Mechanized Menace,True
+13,Ryze,Ryze,the Rune Mage,True
+360,Samira,Samira,the Desert Rose,True
+113,Sejuani,Sejuani,Fury of the North,True
+235,Senna,Senna,the Redeemer,True
+147,Seraphine,Seraphine,the Starry-Eyed Songstress,True
+875,Sett,Sett,the Boss,True
+35,Shaco,Shaco,the Demon Jester,True
+98,Shen,Shen,the Eye of Twilight,True
+102,Shyvana,Shyvana,the Half-Dragon,True
+27,Singed,Singed,the Mad Chemist,True
+14,Sion,Sion,The Undead Juggernaut,True
+15,Sivir,Sivir,the Battle Mistress,True
+72,Skarner,Skarner,the Primordial Sovereign,True
+901,Smolder,Smolder,the Fiery Fledgling,True
+37,Sona,Sona,Maven of the Strings,True
+16,Soraka,Soraka,the Starchild,True
+50,Swain,Swain,the Noxian Grand General,True
+517,Sylas,Sylas,the Unshackled,True
+134,Syndra,Syndra,the Dark Sovereign,True
+223,TahmKench,Tahm Kench,The River King,True
+163,Taliyah,Taliyah,the Stoneweaver,True
+91,Talon,Talon,the Blade's Shadow,True
+44,Taric,Taric,the Shield of Valoran,True
+17,Teemo,Teemo,the Swift Scout,True
+412,Thresh,Thresh,the Chain Warden,True
+18,Tristana,Tristana,the Yordle Gunner,True
+48,Trundle,Trundle,the Troll King,True
+23,Tryndamere,Tryndamere,the Barbarian King,True
+4,TwistedFate,Twisted Fate,the Card Master,True
+29,Twitch,Twitch,the Plague Rat,True
+77,Udyr,Udyr,the Spirit Walker,True
+6,Urgot,Urgot,the Dreadnought,True
+110,Varus,Varus,the Arrow of Retribution,True
+67,Vayne,Vayne,the Night Hunter,True
+45,Veigar,Veigar,the Tiny Master of Evil,True
+161,Velkoz,Vel'Koz,the Eye of the Void,True
+711,Vex,Vex,the Gloomist,True
+254,Vi,Vi,the Piltover Enforcer,True
+234,Viego,Viego,The Ruined King,True
+112,Viktor,Viktor,the Herald of the Arcane,True
+8,Vladimir,Vladimir,the Crimson Reaper,True
+106,Volibear,Volibear,the Relentless Storm,True
+19,Warwick,Warwick,the Uncaged Wrath of Zaun,True
+498,Xayah,Xayah,the Rebel,True
+101,Xerath,Xerath,the Magus Ascendant,True
+5,XinZhao,Xin Zhao,the Seneschal of Demacia,True
+157,Yasuo,Yasuo,the Unforgiven,True
+777,Yone,Yone,the Unforgotten,True
+83,Yorick,Yorick,Shepherd of Souls,True
+350,Yuumi,Yuumi,the Magical Cat,True
+154,Zac,Zac,the Secret Weapon,True
+238,Zed,Zed,the Master of Shadows,True
+221,Zeri,Zeri,The Spark of Zaun,True
+115,Ziggs,Ziggs,the Hexplosives Expert,True
+26,Zilean,Zilean,the Chronokeeper,True
+142,Zoe,Zoe,the Aspect of Twilight,True
+143,Zyra,Zyra,Rise of the Thorns,True
