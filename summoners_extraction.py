@@ -70,26 +70,33 @@ def get_summoners(region, tier, divisions, max_count=20):
 
                 for entry in entries:
                     sid = entry.get("summonerId")
-        if sid and sid not in seen_ids:
-            # Fetch puuid using summoner-v4 API
-            summoner_url = f"{base_url}/lol/summoner/v4/summoners/{sid}"
-            enforce_rate_limits()
-            try:
-                summoner_resp = requests.get(summoner_url, headers=HEADERS, timeout=10)
-                if summoner_resp.status_code == 200:
-                    summoner_data = summoner_resp.json()
-                    puuid = summoner_data.get("puuid")
-                    if puuid:
-                        summoner_entries.append({
-                            "region": region,
-                            "tier": tier,
-                            "division": division,
-                            "summonerId": sid,
-                            "puuid": puuid
-                        })
-                        seen_ids.add(sid)
+                    if sid and sid not in seen_ids:
+                        # Fetch puuid using summoner-v4 API
+                        summoner_url = f"{base_url}/lol/summoner/v4/summoners/{sid}"
+                        enforce_rate_limits()
+                        try:
+                            summoner_resp = requests.get(summoner_url, headers=HEADERS, timeout=10)
+                            if summoner_resp.status_code == 200:
+                                summoner_data = summoner_resp.json()
+                                puuid = summoner_data.get("puuid")
+                                if puuid:
+                                    summoner_entries.append({
+                                        "region": region,
+                                        "tier": tier,
+                                        "division": division,
+                                        "summonerId": sid,
+                                        "puuid": puuid
+                                    })
+                                    seen_ids.add(sid)
+                                    if len(seen_ids) >= max_count:
+                                        break
+                        except Exception as e:
+                            logging.error(f"❌ Failed to fetch summoner details for {sid}: {e}")
+                if len(seen_ids) >= max_count:
+                    break
             except Exception as e:
-                logging.error(f"❌ Failed to fetch summoner details for {sid}: {e}")
+                logging.error(f"❌ Request failed for {url}: {e}")
+                time.sleep(5)
 
     logging.info(f"✅ {len(summoner_entries)} summoners fetched from {region} {tier}")
     return summoner_entries
